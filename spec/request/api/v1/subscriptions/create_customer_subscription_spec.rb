@@ -6,7 +6,7 @@ RSpec.describe 'Customer Subscription Tea Request', type: :request do
     it 'subscribes a customer to a tea subscription' do
       customer = create(:customer)
 
-      post "/api/v1/customers/#{customer.id}/subscriptions",
+      post api_v1_customer_subscriptions_path(customer),
       params: { title: "Introduction Pack",
                 price: 13.99,
                 frequency: "monthly", }
@@ -38,7 +38,7 @@ RSpec.describe 'Customer Subscription Tea Request', type: :request do
     it 'will return an error if frequency of the subscription is missing' do
       customer = create(:customer)
 
-      post "/api/v1/customers/#{customer.id}/subscriptions",
+      post api_v1_customer_subscriptions_path(customer),
       params: { title: "Introduction Pack",
                 price: 13.99, }
 
@@ -55,7 +55,7 @@ RSpec.describe 'Customer Subscription Tea Request', type: :request do
     it 'will return an error if title of the subscription is missing' do
       customer = create(:customer)
 
-      post "/api/v1/customers/#{customer.id}/subscriptions",
+      post api_v1_customer_subscriptions_path(customer),
       params: { price: 13.99,
                 frequency: 'monthly', }
 
@@ -72,7 +72,7 @@ RSpec.describe 'Customer Subscription Tea Request', type: :request do
     it 'will return an error if price of the subscription is missing' do
       customer = create(:customer)
 
-      post "/api/v1/customers/#{customer.id}/subscriptions",
+      post api_v1_customer_subscriptions_path(customer),
       params: { title: "Introduction Pack",
                 frequency: 'monthly', }
 
