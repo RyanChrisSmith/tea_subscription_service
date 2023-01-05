@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Customer Subscription Tea Request', type: :request do
+RSpec.describe 'Customer Subscription Tea Request' do
 
   describe 'happy path' do
     it 'subscribes a customer to a tea subscription' do
