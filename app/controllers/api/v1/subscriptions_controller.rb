@@ -9,9 +9,19 @@ class Api::V1::SubscriptionsController < ApplicationController
     end
   end
 
+  def update
+    subscription = Subscription.find(params[:id])
+    subscription.update(update_subscription_params)
+    render json: SubscriptionSerializer.new(subscription)
+  end
+
 
   private
   def subscription_params
     params.permit(:title, :price, :status, :frequency, :customer_id)
+  end
+
+  def update_subscription_params
+    params.permit(:status)
   end
 end
