@@ -5,17 +5,18 @@ describe 'Get all subscriptions' do
     it 'will show all subscriptions for a customer regardless of status' do
       teas = create_list(:tea, 12)
       customers = create_list(:customer, 3)
-      subscriptions = create_list(:subscription, 4, customer: customers[0], teas: teas)
+      original_subscriptions = create_list(:subscription, 4, customer: customers[0], teas: teas)
 
       get api_v1_customer_subscriptions_path(customers[0])
 
       expect(response).to be_successful
       expect(response.status).to eq 200
 
-      customer_subscriptions = JSON.parse(response.body, symbolize_names: true)
-      all_subscriptions = customer_subscriptions[:data]
+      data = JSON.parse(response.body, symbolize_names: true)
+      all_subscriptions = data[:data]
 
       expect(all_subscriptions.count).to eq 4
+      expect(original_subscriptions.first.customer_id).to eq(customers[0].id)
 
       all_subscriptions.each do |subscript|
         expect(subscript).to have_key(:id)
