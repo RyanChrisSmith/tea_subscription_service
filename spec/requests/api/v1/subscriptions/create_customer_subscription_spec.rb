@@ -3,13 +3,17 @@ require 'rails_helper'
 RSpec.describe 'Customer Subscription Tea Request' do
 
   describe 'happy path' do
-    it 'subscribes a customer to a tea subscription' do
-      customer = create(:customer)
+    before :each do
+      @teas = create_list(:tea, 2)
+      @customer = create(:customer)
+    end
 
-      post api_v1_customer_subscriptions_path(customer),
+    it 'subscribes a @customer to a tea subscription' do
+      post api_v1_customer_subscriptions_path(@customer),
       params: { title: "Introduction Pack",
-                price: 13.99,
-                frequency: "monthly", }
+      price: 13.99,
+      tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
+      frequency: "monthly", }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
 
@@ -35,28 +39,31 @@ RSpec.describe 'Customer Subscription Tea Request' do
   end
 
   describe 'sad path' do
-    it 'will return an error if frequency of the subscription is missing' do
-      customer = create(:customer)
-
-      post api_v1_customer_subscriptions_path(customer),
-      params: { title: "Introduction Pack",
-                price: 13.99, }
-
-      new_subscription = JSON.parse(response.body, symbolize_names: true)
-
-      expect(response).to_not be_successful
-      expect(response.status).to eq 400
-
-      expect(new_subscription).to be_a Hash
-      expect(new_subscription).to have_key(:errors)
-      expect(new_subscription[:errors]).to eq(["Frequency can't be blank"])
+    before :each do
+      @teas = create_list(:tea, 12)
+      @customer = create(:customer)
     end
 
-    it 'will return an error if title of the subscription is missing' do
-      customer = create(:customer)
+    it 'will return an error if frequency of the subscription is missing' do
+    post api_v1_customer_subscriptions_path(@customer),
+    params: { title: "Introduction Pack",
+              tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
+              price: 13.99, }
 
-      post api_v1_customer_subscriptions_path(customer),
+    new_subscription = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq 400
+
+    expect(new_subscription).to be_a Hash
+    expect(new_subscription).to have_key(:errors)
+    expect(new_subscription[:errors]).to eq(["Frequency can't be blank"])
+  end
+
+    it 'will return an error if title of the subscription is missing' do
+      post api_v1_customer_subscriptions_path(@customer),
       params: { price: 13.99,
+                tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
                 frequency: 'monthly', }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
@@ -70,10 +77,9 @@ RSpec.describe 'Customer Subscription Tea Request' do
     end
 
     it 'will return an error if price of the subscription is missing' do
-      customer = create(:customer)
-
-      post api_v1_customer_subscriptions_path(customer),
+      post api_v1_customer_subscriptions_path(@customer),
       params: { title: "Introduction Pack",
+                tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
                 frequency: 'monthly', }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
@@ -86,4 +92,8 @@ RSpec.describe 'Customer Subscription Tea Request' do
       expect(new_subscription[:errors]).to eq(["Price can't be blank"])
     end
   end
+
+  # describe 'edge case' do
+  # it still works fine without teas attached to the subscription
+  # end
 end
