@@ -10,10 +10,10 @@ RSpec.describe 'Customer Subscription Tea Request' do
 
     it 'subscribes a @customer to a tea subscription' do
       post api_v1_customer_subscriptions_path(@customer),
-      params: { title: "Introduction Pack",
-      price: 13.99,
-      tea_id: @tea.id,
-      frequency: "monthly", }
+           params: { title: "Introduction Pack",
+                     price: 13.99,
+                     tea_id: @tea.id,
+                     frequency: "monthly" }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
 
@@ -46,9 +46,9 @@ RSpec.describe 'Customer Subscription Tea Request' do
 
     it 'will return an error if frequency of the subscription is missing' do
     post api_v1_customer_subscriptions_path(@customer),
-    params: { title: "Introduction Pack",
-              tea_id: @tea.id,
-              price: 13.99, }
+         params: { title: "Introduction Pack",
+                   tea_id: @tea.id,
+                   price: 13.99 }
 
     new_subscription = JSON.parse(response.body, symbolize_names: true)
 
@@ -63,9 +63,9 @@ RSpec.describe 'Customer Subscription Tea Request' do
 
     it 'will return an error if title of the subscription is missing' do
       post api_v1_customer_subscriptions_path(@customer),
-      params: { price: 13.99,
-                tea_id: @tea.id,
-                frequency: 'monthly', }
+           params: { price: 13.99,
+                     tea_id: @tea.id,
+                     frequency: 'monthly', }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
 
@@ -79,9 +79,9 @@ RSpec.describe 'Customer Subscription Tea Request' do
 
     it 'will return an error if price of the subscription is missing' do
       post api_v1_customer_subscriptions_path(@customer),
-      params: { title: "Introduction Pack",
-                tea_id: @tea.id,
-                frequency: 'monthly', }
+           params: { title: "Introduction Pack",
+                     tea_id: @tea.id,
+                     frequency: 'monthly', }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
 
@@ -93,8 +93,4 @@ RSpec.describe 'Customer Subscription Tea Request' do
       expect(new_subscription[:errors]).to eq(["Price can't be blank"])
     end
   end
-
-  # describe 'edge case' do
-  # it still works fine without teas attached to the subscription
-  # end
 end
