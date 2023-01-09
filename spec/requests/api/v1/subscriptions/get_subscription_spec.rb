@@ -3,9 +3,9 @@ require 'rails_helper'
 describe 'Get all subscriptions' do
   describe 'happy path' do
     it 'will show all subscriptions for a customer regardless of status' do
-      teas = create_list(:tea, 12)
+      tea = create(:tea)
       customers = create_list(:customer, 3)
-      original_subscriptions = create_list(:subscription, 4, customer: customers[0], teas: teas)
+      original_subscriptions = create_list(:subscription, 4, customer: customers[0], tea: tea)
 
       get api_v1_customer_subscriptions_path(customers[0])
 

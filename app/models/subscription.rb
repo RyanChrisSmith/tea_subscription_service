@@ -1,10 +1,8 @@
 class Subscription < ApplicationRecord
   belongs_to :customer
-  validates_associated :customer
+  belongs_to :tea
 
-  has_many :subscription_teas
-  has_many :teas, through: :subscription_teas
   enum status: %i[active cancelled]
 
-  validates :title, :price, :status, :frequency, :customer_id, presence: true
+  validates_presence_of :title, :price, :status, :frequency, :customer_id, :tea_id
 end

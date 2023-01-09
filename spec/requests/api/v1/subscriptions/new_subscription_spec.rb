@@ -4,7 +4,7 @@ RSpec.describe 'Customer Subscription Tea Request' do
 
   describe 'happy path' do
     before :each do
-      @teas = create_list(:tea, 2)
+      @tea = create(:tea)
       @customer = create(:customer)
     end
 
@@ -12,7 +12,7 @@ RSpec.describe 'Customer Subscription Tea Request' do
       post api_v1_customer_subscriptions_path(@customer),
       params: { title: "Introduction Pack",
       price: 13.99,
-      tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
+      tea_id: @tea.id,
       frequency: "monthly", }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
@@ -40,14 +40,14 @@ RSpec.describe 'Customer Subscription Tea Request' do
 
   describe 'sad path' do
     before :each do
-      @teas = create_list(:tea, 12)
+      @tea = create(:tea)
       @customer = create(:customer)
     end
 
     it 'will return an error if frequency of the subscription is missing' do
     post api_v1_customer_subscriptions_path(@customer),
     params: { title: "Introduction Pack",
-              tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
+              tea_id: @tea.id,
               price: 13.99, }
 
     new_subscription = JSON.parse(response.body, symbolize_names: true)
@@ -57,13 +57,14 @@ RSpec.describe 'Customer Subscription Tea Request' do
 
     expect(new_subscription).to be_a Hash
     expect(new_subscription).to have_key(:errors)
+
     expect(new_subscription[:errors]).to eq(["Frequency can't be blank"])
   end
 
     it 'will return an error if title of the subscription is missing' do
       post api_v1_customer_subscriptions_path(@customer),
       params: { price: 13.99,
-                tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
+                tea_id: @tea.id,
                 frequency: 'monthly', }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
@@ -79,7 +80,7 @@ RSpec.describe 'Customer Subscription Tea Request' do
     it 'will return an error if price of the subscription is missing' do
       post api_v1_customer_subscriptions_path(@customer),
       params: { title: "Introduction Pack",
-                tea_ids: "#{@teas.map { |tea| tea.id }.join(',')}",
+                tea_id: @tea.id,
                 frequency: 'monthly', }
 
       new_subscription = JSON.parse(response.body, symbolize_names: true)
