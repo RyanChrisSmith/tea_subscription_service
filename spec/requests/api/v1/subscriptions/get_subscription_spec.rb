@@ -38,4 +38,24 @@ describe 'Get all subscriptions' do
       end
     end
   end
+
+  describe 'sad path' do
+    it 'will return an error if a customer with given id doesnt exist' do
+      tea = create(:tea)
+      customer = create(:customer)
+      subscriptions = create_list(:subscription, 4, customer: customer, tea: tea)
+      faulty_id = customer.id + 1
+
+      get api_v1_customer_subscriptions_path(faulty_id)
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq 404
+
+      expect(data).to have_key(:error)
+      expect(data[:error]).to eq 404
+      expect(data).to have_key(:message)
+      expect(data[:message]).to eq("Customer must exist")
+    end
+  end
 end
