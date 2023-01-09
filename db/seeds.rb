@@ -28,8 +28,9 @@ customers = Customer.all
     title: Faker::Subscription.plan,
     price: Faker::Commerce.price(range: 0..30.0),
     status: Faker::Number.between(from: 0, to: 1),
-    frequency: 'monthly',
-    customer_id: (customers[0..4].sample).id
+    frequency: ['daily', 'weekly', 'monthly', 'yearly'].sample,
+    customer_id: (customers[0..4].sample).id,
+    tea_id: (teas[0..29].sample).id
     )
 end
 

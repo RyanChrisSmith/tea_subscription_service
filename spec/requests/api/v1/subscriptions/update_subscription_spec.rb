@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe 'Customer can update status of subscription' do
   describe 'happy path' do
     it 'can cancel an active subscription' do
-      teas = create_list(:tea, 12)
+      tea = create(:tea)
       customer = create(:customer)
-      subscription = create(:subscription, status: 'active', customer_id: customer.id, teas: teas)
+      subscription = create(:subscription, status: 'active', customer_id: customer.id, tea: tea)
 
       patch api_v1_customer_subscription_path(customer, subscription),
       params: { status: 'cancelled'}
@@ -19,9 +19,9 @@ RSpec.describe 'Customer can update status of subscription' do
     end
 
     it 'can activate a cancelled subscription' do
-      teas = create_list(:tea, 12)
+      tea = create(:tea)
       customer = create(:customer)
-      subscription = create(:subscription, status: 'cancelled', customer_id: customer.id, teas: teas)
+      subscription = create(:subscription, status: 'cancelled', customer_id: customer.id, tea: tea)
 
       patch api_v1_customer_subscription_path(customer, subscription),
       params: { status: 'active'}

@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe Subscription, type: :model do
   describe 'relationships' do
     it { should belong_to :customer}
-    it { should have_many :subscription_teas}
-    it { should have_many(:teas).through(:subscription_teas)}
+    it { should belong_to :tea }
   end
 
   describe 'validations' do
@@ -12,6 +11,8 @@ RSpec.describe Subscription, type: :model do
     it { should validate_presence_of :price}
     it { should validate_presence_of :status}
     it { should validate_presence_of :frequency}
+    it { should validate_presence_of :customer_id}
+    it { should validate_presence_of :tea_id}
   end
 
 end
