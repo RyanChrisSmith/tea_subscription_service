@@ -11,7 +11,6 @@
 - [Gems](#gems)
 - [Setup / install](#setup--install)
 - [Endpoints](#endpoints)
-  - [Edgecases / Sad Path](#edgecases--sad-path)
 - [Further development possibilities](#further-development-possibilities)
 - [Developer info](#developer-info)
 
@@ -25,7 +24,7 @@
 
 #### [Back to table of contents](#table-of-contents)
 ## Architecture
-  - This is Service Oriented Architecture by design and time limitations. Rather than create a monolith application, the intent is to serve up endpoints for the front end team to consume.
+  - This is a Backend application built with a Service Oriented Structure to be consumed by a Frontend team. Rather than create a monolith application, the intent is to serve up endpoints for the front end team to consume.
 
 ## Database
 ![image](app/assets/schema.png)
@@ -70,8 +69,10 @@ This project used `Ruby 2.7.4`
     - [Get all subscriptions for a Customer](#get-all-subscriptions-for-a-customer)
     - [Create a subscription for a Customer](#create-a-subscription-for-a-customer)
     - [Update a subscription for a Customer](#update-a-subscription-for-a-customer)
-    ### Get all subscriptions for a Customer
-    - GET `'/api/v1/users/1/subscriptions'`
+    - [Get all customers](#get-all-customers)
+    - [Get all teas]()
+    ## Get all subscriptions for a Customer
+    - GET `/api/v1/users/1/subscriptions`
     - example response
     ```
     {
@@ -103,8 +104,8 @@ This project used `Ruby 2.7.4`
       ]
     }
     ```
-    ### Create a subscription for a Customer
-    - POST `'/api/v1/users/1/subscriptions'`
+    ## Create a subscription for a Customer
+    - POST `/api/v1/users/1/subscriptions`
     - example params (all below fields required) :
     ```
     params: {
@@ -131,8 +132,8 @@ This project used `Ruby 2.7.4`
       }
     }
     ```
-    ### Update a subscription for a Customer
-    - PATCH `'/api/v1/users/1/subscriptions'`
+    ## Update a subscription for a Customer
+    - PATCH `/api/v1/users/1/subscriptions`
     - _You can change the current status to either active or cancelled in relation to its status before updating the subscription_
     - example params:
     ```
@@ -155,15 +156,78 @@ This project used `Ruby 2.7.4`
       }
     }
     ```
-  - ## Edgecases / Sad Path
-#### [Back to table of contents](#table-of-contents)
+    #### [Back to table of contents](#table-of-contents)
+    ## Get all customers
+    - GET `/api/v1/customers`
+    ```
+    {
+      "data": [
+        {
+          "id": "1",
+          "type": "customer",
+          "attributes": {
+            "first_name": "Ashley",
+            "last_name": "Kassulke",
+            "email": "freeman@example.org",
+            "address": "2091 Man Common, Gulgowskifurt, VA 96852-1765"
+          }
+        },
+        {
+          "id": "2",
+          "type": "customer",
+          "attributes": {
+            "first_name": "Scarlet",
+            "last_name": "Walker",
+            "email": "danae.huel@example.org",
+            "address": "Apt. 663 88917 Danyel Mission, Halvorsonstad, OH 22246"
+          }
+        },
+      etc...
+      ]
+    }
+    ```
+
+    #### [Back to table of contents](#table-of-contents)
+
+    ## Get all teas
+    - GET `api/v1/teas`
+    ```
+    {
+      "data": [
+        {
+          "id": "1",
+          "type": "tea",
+          "attributes": {
+            "title": "Gunpowder",
+            "description": "Well, this is great. If the ionization-rate is constant for...",
+            "temperature": "The things I do for love.",
+            "brew_time": "balanced"
+          }
+        },
+        {
+          "id": "2",
+          "type": "tea",
+          "attributes": {
+            "title": "Darjeeling",
+            "description": "It's true, your honor. The man is some kind...",
+            "temperature": "Laughter is poison to fear.",
+            "brew_time": "lingering"
+          }
+        },
+      etc...
+      ]
+    }
+    ```
+
 ---
 ## Further Development possibilities
 - Given more time
-  - I would like to see a subscription to be preset with many teas
-  - I would like to implement customer authentication
-  - I would like to reach out to a 3rd party API to bring in real tea data
-  -
+  - subscription to be preset with many teas
+  - implement customer authentication
+  - implement customer authorization levels
+  - reach out to a 3rd party API to bring in real tea data
+  - The price would be better fit on individual teas to then aggregate the price on to the subscription
+  - Further edgecase and sad path testing
 
 ## Developer Info
 
